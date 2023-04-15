@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1087272563959",
+    "project_id": "tiktok-clone-app-c9914",
+    "storage_bucket": "tiktok-clone-app-c9914.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1087272563959:android:b7037ec608c89627d18ff2",
+        "android_client_info": {
+          "package_name": "com.kajal.hiphop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1087272563959-dvije3qdorneb8vih9uf1tnu77o8eo25.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC65jjfqsxHosWqk09HHrf1LG8RXTyzIAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1087272563959-dvije3qdorneb8vih9uf1tnu77o8eo25.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
