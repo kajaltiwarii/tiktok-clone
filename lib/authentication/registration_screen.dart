@@ -6,6 +6,7 @@ import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 import 'package:tiktok_clone/authentication/authentication_controller.dart';
 import 'package:tiktok_clone/authentication/login_screen.dart';
 
+import '../global.dart';
 import '../widgets/input_text_widget.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -21,7 +22,6 @@ class _RegistrationScreenState extends State<RegistrationScreen>
   TextEditingController userNameTextEditingController = TextEditingController();
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
-  bool showProgressBar = false;
 
   var authenticationController = AuthenticationController.instanceAuth;
 
@@ -68,9 +68,9 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                   width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   child: InputTextWidget(
-                      textEditingController: emailTextEditingController,
-                      lableString: "Email",
-                      iconData: Icons.email_outlined,
+                      textEditingController: userNameTextEditingController,
+                      lableString: "Username",
+                      iconData: Icons.person_outlined,
                       isObscure: false
                   ),
                 ),
@@ -80,8 +80,8 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                   width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   child: InputTextWidget(
-                      textEditingController: userNameTextEditingController,
-                      lableString: "Username",
+                      textEditingController: emailTextEditingController,
+                      lableString: "Email",
                       iconData: Icons.email_outlined,
                       isObscure: false
                   ),
@@ -114,9 +114,47 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                       child: InkWell(
                         onTap: ()
                         {
-                          setState(() {
-                            showProgressBar = true;
-                          });
+                          if(authenticationController.profileImage != null && userNameTextEditingController.text.isNotEmpty && emailTextEditingController.text.isNotEmpty && passwordTextEditingController.text.isNotEmpty)
+                          {
+                            setState(() {
+                              showProgressBar = true;
+                            });
+                            //create an account for user
+                            authenticationController.createAccountForNewUser(
+                                authenticationController.profileImage!,
+                                userNameTextEditingController.text,
+                                emailTextEditingController.text.toString().trim(),
+                                passwordTextEditingController.text);
+                          }else{
+                            if(authenticationController.profileImage == null){
+                              Get.snackbar
+                                (
+                                  "Profile Image",
+                                  "please upload profile image"
+                              );
+                            }
+                            if(userNameTextEditingController.text.isEmpty){
+                              Get.snackbar
+                                (
+                                  "userName",
+                                  ""
+                              );
+                            }
+                            if(emailTextEditingController.text.isNotEmpty){
+                              Get.snackbar
+                                (
+                                  "email",
+                                  ""
+                              );
+                            }
+                            if(passwordTextEditingController.text.isEmpty){
+                              Get.snackbar
+                                (
+                                  "password",
+                                  ""
+                              );
+                            }
+                          }
                         },
                         child: const Center(
                           child: Text("Sign Up",
