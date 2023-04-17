@@ -3,9 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tiktok_clone/authentication/login_screen.dart';
 import 'package:tiktok_clone/global.dart';
@@ -72,7 +69,7 @@ class AuthenticationController extends GetxController
       await FirebaseFirestore.instance.collection("users").doc(credential.user!.uid).set(user.toJson());
     }catch(error)
     {
-      Get.snackbar(error.toString(), "Error occured while creating acocunt, try again");
+      Get.snackbar(error.toString(), "Error occurred while creating account, try again");
       print("Error --> ${error.toString()}");
       showProgressBar = false;
       Get.to(LoginScreen());
