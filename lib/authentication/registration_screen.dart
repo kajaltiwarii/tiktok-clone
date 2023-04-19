@@ -114,6 +114,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                       child: InkWell(
                         onTap: ()
                         {
+
                           if(authenticationController.profileImage != null && userNameTextEditingController.text.isNotEmpty && emailTextEditingController.text.isNotEmpty && passwordTextEditingController.text.isNotEmpty)
                           {
                             setState(() {

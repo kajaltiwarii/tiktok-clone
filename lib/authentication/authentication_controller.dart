@@ -24,9 +24,13 @@ class AuthenticationController extends GetxController
           "Profile Image",
           "You have successfully uploaded your profile picture"
         );
-      }
-
-    _pickedFile = Rx<File>(File(pickedImageFile!.path));
+        _pickedFile = Rx<File>(File(pickedImageFile.path));
+      }else{
+      Get.snackbar(
+          "Profile Image",
+          "You have not uploaded your profile picture"
+      );
+    }
 
   }
 
@@ -56,20 +60,21 @@ class AuthenticationController extends GetxController
       );
 
       //2. save the user profile image to firebase storage
-      String imageDownloanUrl = await uploadImagetoStorage(imageFile);
+      String imageDownloadUrl = await uploadImagetoStorage(imageFile);
 
-      //3. save user data to the firestore datebase
+      //3. save user data to the firestore database
       userModel.User user = userModel.User(
           name: userName,
           email: userEmail,
-          image: imageDownloanUrl,
+          image: imageDownloadUrl,
           uid: credential.user!.uid
       );
 
       await FirebaseFirestore.instance.collection("users").doc(credential.user!.uid).set(user.toJson());
+      Get.snackbar("Congratulation!", "Your account is created successfully.");
+      showProgressBar = false;
     }catch(error)
     {
-      Get.snackbar(error.toString(), "Error occurred while creating account, try again");
       print("Error --> ${error.toString()}");
       showProgressBar = false;
       Get.to(LoginScreen());
