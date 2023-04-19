@@ -6,6 +6,8 @@ import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 import 'package:tiktok_clone/authentication/registration_screen.dart';
 import 'package:tiktok_clone/widgets/input_text_widget.dart';
 
+import 'authentication_controller.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -20,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen>
   TextEditingController passwordTextEditingController = TextEditingController();
   bool showProgressBar = false;
 
+  var authenticationController = AuthenticationController.instanceAuth;
 
   @override
   Widget build(BuildContext context)
@@ -93,9 +96,14 @@ class _LoginScreenState extends State<LoginScreen>
                     child: InkWell(
                       onTap: ()
                       {
-                        setState(() {
-                          showProgressBar = true;
-                        });
+                        if(emailTextEditingController.text.isNotEmpty && passwordTextEditingController.text.isNotEmpty)
+                        {
+                          authenticationController.loginUserNow(emailTextEditingController.text, passwordTextEditingController.text);
+                          setState(() {
+                            showProgressBar = true;
+                          });
+                        }
+
                       },
                       child: const Center(
                         child: Text("Login",
@@ -108,19 +116,19 @@ class _LoginScreenState extends State<LoginScreen>
                       ),
                     ),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text("Don't have an Account?",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey,
                         ),
                       ),
                       InkWell(
                         onTap: (){
-                          Get.to(() =>(RegistrationScreen()));
+                          Get.to(() =>(const RegistrationScreen()));
                         },
                         child: const Text("SignUp Now",
                           style: TextStyle(
@@ -155,4 +163,5 @@ class _LoginScreenState extends State<LoginScreen>
       )
     );
   }
+
 }

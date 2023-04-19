@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tiktok_clone/authentication/login_screen.dart';
+import 'package:tiktok_clone/authentication/registration_screen.dart';
 import 'package:tiktok_clone/global.dart';
 import 'user.dart' as userModel;
 
@@ -73,9 +74,10 @@ class AuthenticationController extends GetxController
       await FirebaseFirestore.instance.collection("users").doc(credential.user!.uid).set(user.toJson());
       Get.snackbar("Congratulation!", "Your account is created successfully.");
       showProgressBar = false;
+      Get.to(LoginScreen());
     }catch(error)
     {
-      print("Error --> ${error.toString()}");
+      Get.snackbar("registration error occurred!", "while authentication");
       showProgressBar = false;
       Get.to(LoginScreen());
     }
@@ -96,5 +98,24 @@ class AuthenticationController extends GetxController
 
   }
 
+  void loginUserNow(String userEmail, String userPassword) async{
+
+    try
+    {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: userEmail,
+          password: userPassword);
+
+      Get.snackbar("logged in successful", "you are logged in successfully");
+      showProgressBar = false;
+      Get.to(const RegistrationScreen());
+
+    }catch(error)
+    {
+      Get.snackbar("login error occurred!", "while authentication");
+      showProgressBar = false;
+      Get.to(const RegistrationScreen());
+    }
+  }
 
 }
