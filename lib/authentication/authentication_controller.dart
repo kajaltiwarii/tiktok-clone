@@ -7,11 +7,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tiktok_clone/authentication/login_screen.dart';
 import 'package:tiktok_clone/authentication/registration_screen.dart';
 import 'package:tiktok_clone/global.dart';
+import 'package:tiktok_clone/home/home_screen.dart';
 import 'user.dart' as userModel;
 
 class AuthenticationController extends GetxController
 {
   static AuthenticationController instanceAuth = Get.find();
+  late Rx<User?> _currentUser;
 
   late Rx<File?> _pickedFile;
   File? get profileImage => _pickedFile.value;
@@ -70,16 +72,16 @@ class AuthenticationController extends GetxController
           image: imageDownloadUrl,
           uid: credential.user!.uid
       );
-
       await FirebaseFirestore.instance.collection("users").doc(credential.user!.uid).set(user.toJson());
       Get.snackbar("Congratulation!", "Your account is created successfully.");
       showProgressBar = false;
-      Get.to(LoginScreen());
-    }catch(error)
+
+    }
+    catch(error)
     {
       Get.snackbar("registration error occurred!", "while authentication");
       showProgressBar = false;
-      Get.to(LoginScreen());
+      Get.to(const LoginScreen());
     }
   }
 
@@ -108,7 +110,6 @@ class AuthenticationController extends GetxController
 
       Get.snackbar("logged in successful", "you are logged in successfully");
       showProgressBar = false;
-      Get.to(const RegistrationScreen());
 
     }catch(error)
     {
@@ -118,4 +119,22 @@ class AuthenticationController extends GetxController
     }
   }
 
+  goToScreen(User? currentUser)
+  {
+    if(currentUser == null){ // if user is not already logged in
+      Get.offAll(const LoginScreen());
+    } else
+    {
+      Get.offAll(const HomeScreen());
+    }
+  }
+
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+    _currentUser =  Rx<User?>(FirebaseAuth.instance.currentUser);
+    _currentUser.bindStream(FirebaseAuth.instance.authStateChanges());
+    ever(_currentUser, goToScreen);
+  }
 }
